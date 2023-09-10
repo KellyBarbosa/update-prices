@@ -58,22 +58,6 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-# Executar o backend do projeto
-
-```bash
-# Instalar as dependências
-$ yarn
-
-# Criar as tabelas no banco
-$ npx prisma migrate dev
-
-# Preencher o banco com o seed
-$ npx prisma db seed
-
-# Executar
-$ yarn start
-```
-
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
