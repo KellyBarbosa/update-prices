@@ -20,6 +20,16 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+  @Post('update-prices')
+  updatePrices(@Body() data: any[]) {
+    return this.productsService.updatePrices(Object.values(data)[0]);
+  }
+
+  @Post('validate')
+  validate(@Body() data: any[]) {
+    return this.productsService.validate(Object.values(data)[0]);
+  }
+
   @Get()
   findAll() {
     return this.productsService.findAll();

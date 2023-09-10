@@ -58,14 +58,20 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-# db
+# Executar o backend do projeto
 
 ```bash
+# Instalar as dependências
+$ yarn
+
 # Criar as tabelas no banco
-$ npx prisma migrate dev --name init
+$ npx prisma migrate dev
 
 # Preencher o banco com o seed
 $ npx prisma db seed
+
+# Executar
+$ yarn start
 ```
 
 ## Support
