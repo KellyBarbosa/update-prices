@@ -1,5 +1,7 @@
 # Update prices
 
+⚠️ **Projeto ainda em desenvolvimento** ⚠️
+
 ## Tecnologias utilizadas
 
 - NestJS

@@ -43,63 +43,23 @@ function App() {
         setIsValid(true)
       } else {
         console.log('Existe pelo menos um valor false na API.');
+        setData([])
       }
 
     })
-
-    /* setErrors([])
-
-    let error = [];
-
-    data.forEach(e => {
-      let message = '';
-      let keys = Object.keys(e)
-
-      if(keys.length != 2) {
-        message += 'Não contém as informações necessárias.\n'
-      }
-     
-      if(keys[0] !== "product_code" || keys[1] !== "new_price") {
-        message += 'Um ou mais campos esperados estão ausentes.\n'
-      }
-
-      let values = Object.values(e)
-      console.log("values: ", values)
-
-      if((!Number.isInteger(parseInt(values[0])))) {
-        message += 'O código de produto informado é inválido.\n'
-      }
-
-      if(!(typeof parseFloat(values[1]) === 'number')){
-        message += 'Problema com o preço dos produtos.\n'
-      }
-      error.push(message)
-    })
-
-    setErrors([...error])
-    let countErrors = 0;
-    console.log(errors)
-    errors.forEach((e) => {
-      console.log(e);
-      if(e !== ''){
-        countErrors++
-      }
-    })
-
-    if(countErrors == 0){
-      setIsValid(true)
-    } */
   }
 
   const handleUpdate = () => {
     console.log("handleUpdate\n", data)
 
-    axios.post(`${baseURL}/update-prices`, {
+    axios.post(`${baseURL}/update`, {
       data
     }).then((res) => {
       const {data} = res
       console.log("Voltou:\n")
       console.log(data)
+    }).finally(() =>{
+      setData([])
     })
   }
 
@@ -108,14 +68,12 @@ function App() {
       <input
         type="file"
         accept=".csv"
-        name=""
-        id=""
         onChange={handleUpload}
       />
 
       <br />
 
-      <button onClick={handleValidate}>Validar</button>
+      <button onClick={handleValidate} disabled={data.length == 0 }>Validar</button>
 
       <br /> 
       

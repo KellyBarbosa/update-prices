@@ -20,7 +20,7 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
-  @Post('update-prices')
+  @Post('update')
   updatePrices(@Body() data: any[]) {
     return this.productsService.updatePrices(Object.values(data)[0]);
   }
@@ -40,9 +40,9 @@ export class ProductsController {
     return this.productsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  @Patch()
+  update(id: number, new_price: number) {
+    return this.productsService.update(id, new_price);
   }
 
   @Delete(':id')

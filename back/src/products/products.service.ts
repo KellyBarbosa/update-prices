@@ -24,40 +24,33 @@ export class ProductsService {
   }
 
   async updatePrices(data: ProductData[]) {
-    /* const validate = [];
+    console.log('updatePrices: ', data);
+    return true;
     const dataArray = Object.values(data);
 
     for (const item of dataArray) {
-      let isItemValid: CheckRules = {
-        price: true,
-        code: true,
-        isNumber: true,
-        isFilled: true,
-      };
+      const updatePrice = await this.update(
+        Number(item.product_code),
+        Number(item.new_price),
+      );
 
-      const product = await this.findOne(Number(item.product_code));
-      if (product) {
-        isItemValid.code = true;
-
-        if (!(typeof Number(item.new_price) === 'number')) {
-          isItemValid.isNumber = false;
-        }
-
-        if (!(product.sales_price < Number(item.new_price))) {
-          isItemValid.price = false;
-        }
-        //console.log(product);
+      if (updatePrice) {
+        console.log(
+          'O preço do produto ',
+          Number(item.product_code),
+          ' foi atualizado para ',
+          Number(item.new_price),
+        );
       } else {
-        isItemValid.code = false;
-        isItemValid.price = false;
-        // console.log('Não existe');
+        console.log(
+          'Erro ao atualizar o preço do produto ',
+          Number(item.product_code),
+          ' para ',
+          Number(item.new_price),
+        );
       }
-      //console.log(isItemValid);
-      validate.push(isItemValid);
-      //console.log('validate: ', validate);
     }
 
-    console.log('validate: ', validate); */
     return true;
   }
 
@@ -67,6 +60,7 @@ export class ProductsService {
     const dataArray = Object.values(data);
 
     for (const item of dataArray) {
+      console.log('Item: ', item);
       let isItemValid: CheckRules = {
         code: true,
         price: true,
@@ -77,20 +71,25 @@ export class ProductsService {
       if (item.new_price.trim() === '' || item.product_code.trim() === '') {
         isItemValid.isFilled = false;
       }
+      if (!isNaN(Number(item.product_code))) {
+        const product = await this.findOne(Number(item.product_code));
+        if (product) {
+          if (!(typeof Number(item.new_price) === 'number')) {
+            isItemValid.isNumber = false;
+          }
 
-      const product = await this.findOne(Number(item.product_code));
-      if (product) {
-        if (!(typeof Number(item.new_price) === 'number')) {
-          isItemValid.isNumber = false;
-        }
-
-        if (!(product.sales_price < Number(item.new_price))) {
+          if (!(product.sales_price < Number(item.new_price))) {
+            isItemValid.price = false;
+          }
+        } else {
+          isItemValid.code = false;
           isItemValid.price = false;
         }
       } else {
         isItemValid.code = false;
         isItemValid.price = false;
       }
+
       validate.push(isItemValid);
     }
     console.log('Validate end:', validate);
@@ -126,8 +125,20 @@ export class ProductsService {
     return false;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, new_price: number) {
+    const product = await this.prisma.products.update({
+      where: {
+        code: id,
+      },
+      data: {
+        cost_price: new_price,
+      },
+    });
+
+    if (product) {
+      return true;
+    }
+    return false;
   }
 
   remove(id: number) {
